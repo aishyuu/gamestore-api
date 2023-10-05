@@ -1,7 +1,12 @@
+// Imports GameStore Entity --> /Entities/Game.cs (acts like an interface)
 using GameStore.Api.Entities;
 
+// The endpoint name
+// Purpose: So we can generate URL's to the endpoint, avoiding hard code paths
+// This is mostly for when we put this on the internet
 const string GetGameEndpointName = "GetGame";
 
+// Hard coded list of games for testing purposes
 List <Game> games = new()
 {
     new Game()
@@ -33,51 +38,75 @@ List <Game> games = new()
     }
 };
 
+// builds the app
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
+// We create a map group so every URL starts with "/games"
 var group = app.MapGroup("/games");
 
+// "/games/" endpoint. Returns all games
 group.MapGet("/", () => games);
+
+// "/games/{id}" id = number
+// Returns the specified game data
 group.MapGet("/{id}", (int id) => {
+
+    // checks if the game even exists and puts it in the "game" variable
     Game? game = games.Find(game => game.Id == id);
+
+    // If the result of the check is nothing, it will return a 404 error!
     if (game is null) 
     {
         return Results.NotFound();
     }
+
+    // Returns a 200 with the game
     return Results.Ok(game);
 })
 .WithName(GetGameEndpointName);
 
+// Creates a new game
 group.MapPost("/", (Game game) => {
+    // Sets the id to whatever the max is so we're guaranteed to not have conflicting ID numbers
     game.Id = games.Max(game => game.Id) + 1;
+    // Add the game to the list
     games.Add(game);
 
+    // We return the URI of the new thing we made
+    // So it would be like "http://localhost:****/games/4"
     return Results.CreatedAtRoute(GetGameEndpointName, new {id = game.Id}, game);
 });
 
+// Updates game with new data
 group.MapPut("/{id}", (int id, Game updatedGame) => {
+    // Looks at id given by URL and checks if it exists (standard error checking)
     Game? gameToUpdate = games.Find(game => game.Id == id);
     if (gameToUpdate is null) {
         return Results.NotFound();
     }
     
+    // Takes data from updatedGame and updates the game we want to update
     gameToUpdate.Name = updatedGame.Name;
     gameToUpdate.Genre = updatedGame.Genre;
     gameToUpdate.Price = updatedGame.Price;
     gameToUpdate.ReleaseDate = updatedGame.ReleaseDate;
     gameToUpdate.ImageUri = updatedGame.ImageUri;
 
+    // Returns a 200 but with no content (specifies that we did a good job!)
     return Results.NoContent();
 });
 
+// Delete game given id
 group.MapDelete("/{id}", (int id) => {
+    // Check if game even exists (default error checking)
     Game? gameToDelete = games.Find(game => game.Id == id);
     
     if (gameToDelete is not null) {
         games.Remove(gameToDelete);
     }
 
+    // Return a 200 error with no content
     return Results.NoContent();
 });
 
