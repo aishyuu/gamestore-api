@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore.Api.Entities;
+using GameStore.Api.Repositories;
 
 namespace GameStore.Api.Endpoints
 {
@@ -13,41 +14,11 @@ namespace GameStore.Api.Endpoints
         // This is mostly for when we want to redirect to other endpoints from a delete or a post
         const string GetGameEndpointName = "GetGame";
 
-        // Hard coded list of games for testing purposes
-        static List<Game> games = new()
-        {
-            new Game()
-            {
-                Id = 1,
-                Name = "Street Fighter 2",
-                Genre = "Fighting",
-                Price = 19.99M,
-                ReleaseDate = new DateTime(1991, 2, 1),
-                ImageUri = "https://placehold.co/100"
-            },
-            new Game()
-            {
-                Id = 2,
-                Name = "Final Fantasy XIV",
-                Genre = "MMORPG",
-                Price = 59.99M,
-                ReleaseDate = new DateTime(2010, 9, 30),
-                ImageUri = "https://placehold.co/100"
-            },
-            new Game()
-            {
-                Id = 3,
-                Name = "FIFA 23",
-                Genre = "Sports",
-                Price = 69.99M,
-                ReleaseDate = new DateTime(2022, 9, 27),
-                ImageUri = "https://placehold.co/100"
-            }
-        };
-
         // Builds routes and returns the group map we make in the function
         public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
         {
+            InMemGamesRepository repository = new();
+
             // We create a map group so every URL starts with "/games"
             // The "WithParameterValidation" does all the validation for us and returns json data with the error if it happens!
             // Power of nuget packages
@@ -55,7 +26,7 @@ namespace GameStore.Api.Endpoints
                             .WithParameterValidation();
 
             // "/games/" endpoint. Returns all games
-            group.MapGet("/", () => games);
+            group.MapGet("/", () => repository.GetAll());
 
 
             // "/games/{id}" id = number
@@ -64,7 +35,7 @@ namespace GameStore.Api.Endpoints
             {
 
                 // checks if the game even exists and puts it in the "game" variable
-                Game? game = games.Find(game => game.Id == id);
+                Game? game = repository.Get(id);
 
                 // If the result of the check is nothing, it will return a 404 error!
                 if (game is null)
@@ -80,10 +51,7 @@ namespace GameStore.Api.Endpoints
             // Creates a new game
             group.MapPost("/", (Game game) =>
             {
-                // Sets the id to whatever the max is so we're guaranteed to not have conflicting ID numbers
-                game.Id = games.Max(game => game.Id) + 1;
-                // Add the game to the list
-                games.Add(game);
+                repository.Create(game);
 
                 // We return the URI of the new thing we made
                 // So it would be like "http://localhost:****/games/4"
@@ -94,7 +62,7 @@ namespace GameStore.Api.Endpoints
             group.MapPut("/{id}", (int id, Game updatedGame) =>
             {
                 // Looks at id given by URL and checks if it exists (standard error checking)
-                Game? gameToUpdate = games.Find(game => game.Id == id);
+                Game? gameToUpdate = repository.Get(id);
                 if (gameToUpdate is null)
                 {
                     return Results.NotFound();
@@ -107,6 +75,8 @@ namespace GameStore.Api.Endpoints
                 gameToUpdate.ReleaseDate = updatedGame.ReleaseDate;
                 gameToUpdate.ImageUri = updatedGame.ImageUri;
 
+                repository.Edit(gameToUpdate);
+
                 // Returns a 200 but with no content (specifies that we did a good job!)
                 return Results.NoContent();
             });
@@ -115,11 +85,11 @@ namespace GameStore.Api.Endpoints
             group.MapDelete("/{id}", (int id) =>
             {
                 // Check if game even exists (default error checking)
-                Game? gameToDelete = games.Find(game => game.Id == id);
+                Game? gameToDelete = repository.Get(id);
 
                 if (gameToDelete is not null)
                 {
-                    games.Remove(gameToDelete);
+                    repository.Delete(id);
                 }
 
                 // Return a 200 error with no content

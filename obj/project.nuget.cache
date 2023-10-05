@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "LBDZwGC1CJ4KNvF+7ch5AcSMCUVI9h8Im93Sc+dHqhz+NGA6bUEBKQftibXzciIJlPpS2htnhvBC/2RMNwbhGA==",
+  "dgSpecHash": "+OtN3pHwpWdFYIsnTqqhGrZNTKdm6LBeVduwqVo+XJkN4CgIKoRPmL2zTbSb0ra80h0lwIf6GeNq5GGPBYlh4w==",
   "success": true,
-  "projectFilePath": "F:\\API Projects\\gamestore\\GameStore.Api\\GameStore.Api.csproj",
+  "projectFilePath": "/Users/ivanmatias/C# Projects/gamestore-api/GameStore.Api.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Aiyu\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
-    "C:\\Users\\Aiyu\\.nuget\\packages\\minimalapis.extensions\\0.11.0\\minimalapis.extensions.0.11.0.nupkg.sha512",
-    "C:\\Users\\Aiyu\\.nuget\\packages\\minivalidation\\0.8.0\\minivalidation.0.8.0.nupkg.sha512"
+    "/Users/ivanmatias/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/ivanmatias/.nuget/packages/minimalapis.extensions/0.11.0/minimalapis.extensions.0.11.0.nupkg.sha512",
+    "/Users/ivanmatias/.nuget/packages/minivalidation/0.8.0/minivalidation.0.8.0.nupkg.sha512"
   ],
   "logs": []
 }
