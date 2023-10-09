@@ -3,7 +3,7 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace GameStore.Api.Repositories;
 
-public class InMemGamesRepository
+public class InMemGamesRepository : IGamesRepository
 {
     // Hard coded list of games for testing purposes
     private readonly List<Game> games = new()

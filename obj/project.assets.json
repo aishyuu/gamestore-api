@@ -104,24 +104,27 @@
     ]
   },
   "packageFolders": {
-    "/Users/ivanmatias/.nuget/packages/": {}
+    "C:\\Users\\Aiyu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ivanmatias/C# Projects/gamestore-api/GameStore.Api.csproj",
+      "projectUniqueName": "F:\\API Projects\\gamestore\\GameStore.Api\\GameStore.Api.csproj",
       "projectName": "GameStore.Api",
-      "projectPath": "/Users/ivanmatias/C# Projects/gamestore-api/GameStore.Api.csproj",
-      "packagesPath": "/Users/ivanmatias/.nuget/packages/",
-      "outputPath": "/Users/ivanmatias/C# Projects/gamestore-api/obj/",
+      "projectPath": "F:\\API Projects\\gamestore\\GameStore.Api\\GameStore.Api.csproj",
+      "packagesPath": "C:\\Users\\Aiyu\\.nuget\\packages\\",
+      "outputPath": "F:\\API Projects\\gamestore\\GameStore.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/ivanmatias/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Aiyu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -164,7 +167,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.102/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

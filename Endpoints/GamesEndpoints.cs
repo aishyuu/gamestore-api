@@ -17,8 +17,6 @@ namespace GameStore.Api.Endpoints
         // Builds routes and returns the group map we make in the function
         public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
         {
-            InMemGamesRepository repository = new();
-
             // We create a map group so every URL starts with "/games"
             // The "WithParameterValidation" does all the validation for us and returns json data with the error if it happens!
             // Power of nuget packages
@@ -26,12 +24,12 @@ namespace GameStore.Api.Endpoints
                             .WithParameterValidation();
 
             // "/games/" endpoint. Returns all games
-            group.MapGet("/", () => repository.GetAll());
+            group.MapGet("/", (IGamesRepository repository) => repository.GetAll());
 
 
             // "/games/{id}" id = number
             // Returns the specified game data
-            group.MapGet("/{id}", (int id) =>
+            group.MapGet("/{id}", (IGamesRepository repository, int id) =>
             {
 
                 // checks if the game even exists and puts it in the "game" variable
@@ -49,7 +47,7 @@ namespace GameStore.Api.Endpoints
             .WithName(GetGameEndpointName);
 
             // Creates a new game
-            group.MapPost("/", (Game game) =>
+            group.MapPost("/", (IGamesRepository repository, Game game) =>
             {
                 repository.Create(game);
 
@@ -59,7 +57,7 @@ namespace GameStore.Api.Endpoints
             });
 
             // Updates game with new data
-            group.MapPut("/{id}", (int id, Game updatedGame) =>
+            group.MapPut("/{id}", (IGamesRepository repository, int id, Game updatedGame) =>
             {
                 // Looks at id given by URL and checks if it exists (standard error checking)
                 Game? gameToUpdate = repository.Get(id);
@@ -82,7 +80,7 @@ namespace GameStore.Api.Endpoints
             });
 
             // Delete game given id
-            group.MapDelete("/{id}", (int id) =>
+            group.MapDelete("/{id}", (IGamesRepository repository, int id) =>
             {
                 // Check if game even exists (default error checking)
                 Game? gameToDelete = repository.Get(id);
